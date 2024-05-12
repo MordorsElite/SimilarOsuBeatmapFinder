@@ -1,8 +1,9 @@
 data/**
 !/data/
-!/data/osu_files/
 /data/osu_files/*
-!/data/scraping_data/
+!/data/osu_files/
 /data/scraping_data/*
+!/data/scraping_data/
 !/data/scraping_data/examples/
+!/data/scraping_data/examples/*
 config/config.json
