@@ -5,7 +5,7 @@ import re
 import json
 
 json_file_path = "scraper/items.json"
-ids_file_path = "scraper/ids.txt"
+ids_file_path = "scraper/beatmapset_ids.txt"
 
 sleep_time = 3
 

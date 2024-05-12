@@ -1,3 +1,4 @@
 data/**
-!data/**/
+!data/osu_files/
+!data/scraping_data/
 config/config.json

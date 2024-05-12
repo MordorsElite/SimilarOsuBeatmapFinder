@@ -1,4 +1,9 @@
 {
-    "client_id": "your_client_id",
-    "client_secret": "your_client_secret"
+    "client_id": "YOUR_CLIENT_ID",
+    "client_secret": "YOUR_CLIENT_SECRET",
+    "beatmapset_id_file": "data/scraping_data/beatmapset_ids.txt",
+    "beatmap_id_file": "data/scraping_data/beatmap_ids.txt",
+    "beatmap_id_file_temp": "data/scraping_data/beatmap_ids_temp.json",
+    "gamemodes": [0],
+    "osu_files": "data/osu_files"
 }
