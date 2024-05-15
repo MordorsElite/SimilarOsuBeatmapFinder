@@ -5,7 +5,7 @@ from tqdm import tqdm
 from time import sleep
 
 config_file_path = 'config/config.json'
-api_call_delay = 0.25
+api_call_delay = 0
 
 # Load config
 with open(config_file_path, 'r') as config_file:
@@ -15,10 +15,9 @@ with open(config_file_path, 'r') as config_file:
 if not os.path.exists(config['osu_files']):
     os.makedirs(config['osu_files'])
 
-with open(config['beatmap_id_file_temp']) as beatmap_id_file:
+# Load Beatmap IDs
+with open(config['beatmap_id_file']) as beatmap_id_file:
     beatmap_ids = json.load(beatmap_id_file)
-
-beatmap_ids = [3670020, 3670021, 3670023]
 
 success_counter = 0
 error_counter = 0
