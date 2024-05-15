@@ -14,6 +14,7 @@ config_file_path = 'config/config.json'
 with open(config_file_path, 'r') as config_file:
     config = json.load(config_file)
 
+# Check if any beatmaps have been skipped (error) by osu_sr_calc
 star_rating_error_counter = multiprocessing.Value('i', 0)
 
 def osuToCSV(csv_file_path, osu_file_paths, progress_queue):
@@ -25,6 +26,7 @@ def osuToCSV(csv_file_path, osu_file_paths, progress_queue):
 
         hitobject_counts = {0: 0, 1: 0, 3: 0}  # Initialize hit object counts
         for osu_file in osu_file_paths:
+            # Calculate Star Difficulty of the Map
             try:
                 difficulties = calculateStarRating(
                     returnAllDifficultyValues=True,
@@ -97,20 +99,24 @@ def osuToCSV(csv_file_path, osu_file_paths, progress_queue):
                 else:
                     print(f'No hitobjects in {osu_file}')
 
+# Selects task for a assigned process
 def worker(input_queue:Queue, output_queue:Queue, progress_queue, num_batches:int):
     while True:
         new_task = input_queue.get()
         if new_task is not None:
             index, osu_file_batch = new_task
         else:
+            # When None is received, terminate process
             break
 
+        # Add batch of .osu files to CSV
         temp_file_path = os.path.join(config['temp_files'], f"temp_result_{index}.txt")
         osuToCSV(temp_file_path, osu_file_batch, progress_queue)
         output_queue.put((index, temp_file_path))
 
         input_queue.task_done()
 
+# Seperate process to display one tqdm bar for all processes in console
 def tqdm_worker(progress_queue, total):
     pbar = tqdm(total=total, unit=' beatmaps')
     while True:
@@ -148,23 +154,29 @@ def main(batch_size=100):
         args=(progress_queue, len(osu_files)))
     tqdm_process.start()
 
+    # Start processes
     for i in range(num_cores):
         process = multiprocessing.Process(target=worker, 
             args=(input_queue, output_queue, progress_queue, num_batches))
         process.start()
         processes.append(process)
 
+    # Wait for processes to work through input_queue
     input_queue.join()
 
+    # Send None into input_queue to halt processes
     for _ in range(num_cores):
         input_queue.put(None)
 
+    # Terminate tqdm process
     progress_queue.put(None)
     tqdm_process.join()
 
+    # Collect processes
     for process in processes:
         process.join()
 
+    # Collect temp_file names with indices
     temp_files = {}
     while not output_queue.empty():
         index, temp_file = output_queue.get()
@@ -172,6 +184,7 @@ def main(batch_size=100):
 
     print(f'\nCombining {len(temp_files)} temp files:\n')
 
+    # Combine temporary CSV files into one file and delete temps
     with open(config['osu_csv_file'], 'w') as main_file:
         main_file.write('ID,Total Difficulty,Aim Difficulty,Speed Difficulty,'
                         '#Hitobjects,#Circle,#Slider,#Spinner,Length,Hitobjects\n')
