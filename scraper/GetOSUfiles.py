@@ -55,7 +55,7 @@ if __name__ == '__main__':
         beatmap_ids = json.load(beatmap_id_file)
     beatmap_ids.sort()
 
-    downloader_loop(beatmap_ids)
-    
+    downloader_loop(beatmap_ids, start_index=4800)
+
     print(f'{len(beatmap_ids)} Beatmap-IDs loaded\n')
 
