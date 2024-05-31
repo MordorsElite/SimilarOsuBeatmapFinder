@@ -1,9 +1,13 @@
 {
-    "client_id": "YOUR_CLIENT_ID",
-    "client_secret": "YOUR_CLIENT_SECRET",
-    "beatmapset_id_file": "data/scraping_data/beatmapset_ids.txt",
-    "beatmap_id_file": "data/scraping_data/beatmap_ids.txt",
-    "beatmap_id_file_temp": "data/scraping_data/beatmap_ids_temp.json",
+    "client_id": "YOUR-CLIENT-ID",
+    "client_secret": "YOUR-CLIENT-SECRET",
+    "beatmapset_id_file": "data/scraping_files/beatmapset_ids.json",
+    "beatmap_id_file": "data/scraping_files/beatmap_ids.json",
     "gamemodes": [0],
-    "osu_files": "data/osu_files"
+    "osu_files": "data/osu_files",
+    "required_file_version": "osu file format v14",
+    "osu_csv_file": "data/osu_data.csv",
+    "temp_files": "data/temp_files",
+    "osu_data": "data",
+    "osu_scraping_files": "data/scraping_files"
 }
